@@ -121,12 +121,12 @@ class UsersController extends AppController
               mb_convert_variables('SJIS','UTF-8',$post['Soap']['body']);
               fputcsv($res,array($post['Soap']['created'],$post['Soap']['body']));
             }
-            //fputcsv($res,array("aaaaaaaaaaaaaaaaaaaaaaaaaaa-line"));
+            
             fclose($res);
-            //header('Content-Type: application/octet-stream');
+            
             header('Content-Type: text/csv');
             header('Content-Disposition: attachment; filename ='.$csvFileName);
-            //header('Content-Transfer-Encoding: binary');
+            
             header('Content-Length: ' . filesize($csvFileName));
             readfile($csvFileName);
             exit();
@@ -145,50 +145,6 @@ class UsersController extends AppController
       )  
     );
     $this->set('rows',$this->Paginator->paginate('Soap'));
-
-    //$this->Prg->commonProcess();
-		// Model の filterArgs に定義した内容にしたがって検索条件を作成
-		//$conditions = $this->User->parseCriteria($this->Prg->parsedParams());
-/*    $this->paginate = array(
-			'User' => array(
-				'fields' => array('*', 'Soap.user_id'),
-				'conditions' => $conditions,
-				'limit' => 5,
-				'order' => array(
-                      'Soap.created'=>'desc'
-        ),
-				'joins' => array(
-					array('type' => 'LEFT OUTER', 'alias' => 'Soap',
-							'table' => "(SELECT * FROM ib_soaps WHERE user_id = $id)",
-							'conditions' => 'User.id = Soap.user_id')
-				))
-		);*/
-    /*$this->paginate = array(
-			'User' => array(
-				'fields' => array('*', 'Soap.user_id'),
-				'conditions' => $conditions,
-				'limit' => 20,
-				'order' => 'created desc',
-				'joins' => array(
-					array('type' => 'LEFT OUTER', 'alias' => 'Soap',
-							'table' => '(SELECT s.user_id, group_concat(s.body order by s.id SEPARATOR \',\') as soap_body FROM ib_users u INNER JOIN ib_soaps s ON u.id = s.user_id GROUP BY s.user_id)',
-							'conditions' => 'User.id = Soap.user_id')
-				))
-		);
-    try
-		{
-			$result = $this->paginate();
-		}
-		catch (Exception $e)
-		{
-			// 指定したページが存在しなかった場合（主に検索条件変更時に発生）、1ページ目を設定
-			$this->request->params['named']['page']=1;
-			$result = $this->paginate();
-		}
-    if (isset($this->request->named['sort']) && $this->request->named['sort'] == 'Soap.created')
-		{
-			$result = Set::sort($result, '/soap', $this->request->named['direction']);
-		}*/
     
   }
 /**************/
