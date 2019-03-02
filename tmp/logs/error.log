@@ -1,0 +1,285 @@
+2019-02-26 21:38:00 Error: [NotFoundException] Invalid user
+Request URL: /irohaboard/admin/users/soap/3
+Stack Trace:
+#0 [internal function]: UsersController->admin_soap('3')
+#1 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#3 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#4 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2019-02-26 21:38:08 Error: [NotFoundException] Invalid user
+Request URL: /irohaboard/admin/users/soap/1
+Stack Trace:
+#0 [internal function]: UsersController->admin_soap('1')
+#1 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#3 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#4 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2019-02-26 22:27:16 Error: Fatal Error (1): Call to a member function findById() on null in [C:\xampp\htdocs\irohaboard\Controller\UsersController.php, line 79]
+2019-02-26 22:27:16 Error: [FatalErrorException] Call to a member function findById() on null
+Request URL: /irohaboard/admin/users/soap/3
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Error\ErrorHandler.php(213): ErrorHandler::handleFatalError(1, 'Call to a membe...', 'C:\\xampp\\htdocs...', 79)
+#1 [internal function]: ErrorHandler::handleError(1, 'Call to a membe...', 'C:\\xampp\\htdocs...', 79, Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(933): call_user_func('ErrorHandler::h...', 1, 'Call to a membe...', 'C:\\xampp\\htdocs...', 79, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(906): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2019-02-26 23:32:51 Error: [NotFoundException] Invalid user
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 [internal function]: UsersController->admin_soap('2')
+#1 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#3 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#4 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2019-02-27 09:25:20 Error: [NotFoundException] Invalid user
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 [internal function]: UsersController->admin_soap('2')
+#1 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#3 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#4 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2019-02-27 20:30:06 Error: Fatal Error (4): syntax error, unexpected ')', expecting ',' or ';' in [C:\xampp\htdocs\irohaboard\View\Users\admin_soap.ctp, line 5]
+2019-02-27 20:30:06 Error: [FatalErrorException] syntax error, unexpected ')', expecting ',' or ';'
+Request URL: /irohaboard/admin/users/soap/1
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Error\ErrorHandler.php(213): ErrorHandler::handleFatalError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 5)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 5, Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(933): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 5, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(906): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2019-02-27 21:25:43 Error: [CakeException] The "css-embedded" block was left open. Blocks are not allowed to cross files.
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\View\View.php(473): View->_render('C:\\xampp\\htdocs...')
+#1 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(960): View->render(NULL, NULL)
+#2 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(200): Controller->render()
+#3 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#4 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2019-02-27 22:59:12 Error: [PDOException] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AS `Soap` ON (`User`.`id` = `Soap`.`user_id`)  WHERE 1 = 1   ORDER BY `created` ' at line 1
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(461): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(427): DboSource->_execute('SELECT *, Soap....', Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(669): DboSource->execute('SELECT *, Soap....', Array, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(1118): DboSource->fetchAll('SELECT *, Soap....', false)
+#4 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3031): DboSource->read(Object(User), Array)
+#5 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3003): Model->_readDataSource('all', Array)
+#6 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#7 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(1086): PaginatorComponent->paginate(NULL, Array, Array)
+#8 C:\xampp\htdocs\irohaboard\Controller\UsersController.php(121): Controller->paginate()
+#9 [internal function]: UsersController->admin_soap('2')
+#10 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#11 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#12 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#13 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#14 {main}
+2019-02-27 23:22:56 Error: [PDOException] SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'created' in order clause is ambiguous
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(461): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(427): DboSource->_execute('SELECT *, Soap....', Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(669): DboSource->execute('SELECT *, Soap....', Array, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(1118): DboSource->fetchAll('SELECT *, Soap....', false)
+#4 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3031): DboSource->read(Object(User), Array)
+#5 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3003): Model->_readDataSource('all', Array)
+#6 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#7 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(1086): PaginatorComponent->paginate(NULL, Array, Array)
+#8 C:\xampp\htdocs\irohaboard\Controller\UsersController.php(133): Controller->paginate()
+#9 [internal function]: UsersController->admin_soap('2')
+#10 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#11 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#12 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#13 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#14 {main}
+2019-02-27 23:27:00 Error: [PDOException] SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'created' in order clause is ambiguous
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(461): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(427): DboSource->_execute('SELECT `Soap`.`...', Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(669): DboSource->execute('SELECT `Soap`.`...', Array, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(1118): DboSource->fetchAll('SELECT `Soap`.`...', false)
+#4 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3031): DboSource->read(Object(User), Array)
+#5 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3003): Model->_readDataSource('all', Array)
+#6 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#7 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(1086): PaginatorComponent->paginate(NULL, Array, Array)
+#8 C:\xampp\htdocs\irohaboard\Controller\UsersController.php(133): Controller->paginate()
+#9 [internal function]: UsersController->admin_soap('2')
+#10 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#11 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#12 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#13 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#14 {main}
+2019-02-27 23:32:00 Error: [PDOException] SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'created' in order clause is ambiguous
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(461): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(427): DboSource->_execute('SELECT `Soap`.`...', Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(669): DboSource->execute('SELECT `Soap`.`...', Array, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(1118): DboSource->fetchAll('SELECT `Soap`.`...', false)
+#4 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3031): DboSource->read(Object(User), Array)
+#5 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3003): Model->_readDataSource('all', Array)
+#6 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#7 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(1086): PaginatorComponent->paginate(NULL, Array, Array)
+#8 C:\xampp\htdocs\irohaboard\Controller\UsersController.php(133): Controller->paginate()
+#9 [internal function]: UsersController->admin_soap('2')
+#10 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#11 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#12 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#13 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#14 {main}
+2019-02-27 23:32:02 Error: [PDOException] SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'created' in order clause is ambiguous
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(461): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(427): DboSource->_execute('SELECT `Soap`.`...', Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(669): DboSource->execute('SELECT `Soap`.`...', Array, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(1118): DboSource->fetchAll('SELECT `Soap`.`...', false)
+#4 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3031): DboSource->read(Object(User), Array)
+#5 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3003): Model->_readDataSource('all', Array)
+#6 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#7 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(1086): PaginatorComponent->paginate(NULL, Array, Array)
+#8 C:\xampp\htdocs\irohaboard\Controller\UsersController.php(133): Controller->paginate()
+#9 [internal function]: UsersController->admin_soap('2')
+#10 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#11 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#12 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#13 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#14 {main}
+2019-02-27 23:32:20 Error: [PDOException] SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'created' in order clause is ambiguous
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(461): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(427): DboSource->_execute('SELECT `Soap`.`...', Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(669): DboSource->execute('SELECT `Soap`.`...', Array, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Model\Datasource\DboSource.php(1118): DboSource->fetchAll('SELECT `Soap`.`...', false)
+#4 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3031): DboSource->read(Object(User), Array)
+#5 C:\xampp\htdocs\cake\lib\Cake\Model\Model.php(3003): Model->_readDataSource('all', Array)
+#6 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#7 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(1086): PaginatorComponent->paginate(NULL, Array, Array)
+#8 C:\xampp\htdocs\irohaboard\Controller\UsersController.php(133): Controller->paginate()
+#9 [internal function]: UsersController->admin_soap('2')
+#10 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#11 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#12 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#13 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#14 {main}
+2019-02-28 11:13:24 Error: Fatal Error (4): syntax error, unexpected 'public' (T_PUBLIC) in [C:\xampp\htdocs\irohaboard\Controller\UsersController.php, line 96]
+2019-02-28 11:13:24 Error: [FatalErrorException] syntax error, unexpected 'public' (T_PUBLIC)
+Request URL: /irohaboard/admin/users/soap/2/page:3
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Error\ErrorHandler.php(213): ErrorHandler::handleFatalError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 96)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 96, Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(933): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 96, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(906): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2019-02-28 16:13:45 Error: [BadRequestException] The request has been black-holed
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\SecurityComponent.php(239): SecurityComponent->blackHole(Object(UsersController), 'auth')
+#1 [internal function]: SecurityComponent->startup(Object(UsersController))
+#2 C:\xampp\htdocs\cake\lib\Cake\Utility\ObjectCollection.php(128): call_user_func_array(Array, Array)
+#3 [internal function]: ObjectCollection->trigger(Object(CakeEvent))
+#4 C:\xampp\htdocs\cake\lib\Cake\Event\CakeEventManager.php(243): call_user_func(Array, Object(CakeEvent))
+#5 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(677): CakeEventManager->dispatch(Object(CakeEvent))
+#6 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(189): Controller->startupProcess()
+#7 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#8 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#9 {main}
+2019-02-28 16:14:04 Error: [BadRequestException] The request has been black-holed
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\SecurityComponent.php(239): SecurityComponent->blackHole(Object(UsersController), 'auth')
+#1 [internal function]: SecurityComponent->startup(Object(UsersController))
+#2 C:\xampp\htdocs\cake\lib\Cake\Utility\ObjectCollection.php(128): call_user_func_array(Array, Array)
+#3 [internal function]: ObjectCollection->trigger(Object(CakeEvent))
+#4 C:\xampp\htdocs\cake\lib\Cake\Event\CakeEventManager.php(243): call_user_func(Array, Object(CakeEvent))
+#5 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(677): CakeEventManager->dispatch(Object(CakeEvent))
+#6 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(189): Controller->startupProcess()
+#7 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#8 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#9 {main}
+2019-02-28 16:14:32 Error: [BadRequestException] The request has been black-holed
+Request URL: /irohaboard/admin/users/soap/1
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\SecurityComponent.php(239): SecurityComponent->blackHole(Object(UsersController), 'auth')
+#1 [internal function]: SecurityComponent->startup(Object(UsersController))
+#2 C:\xampp\htdocs\cake\lib\Cake\Utility\ObjectCollection.php(128): call_user_func_array(Array, Array)
+#3 [internal function]: ObjectCollection->trigger(Object(CakeEvent))
+#4 C:\xampp\htdocs\cake\lib\Cake\Event\CakeEventManager.php(243): call_user_func(Array, Object(CakeEvent))
+#5 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(677): CakeEventManager->dispatch(Object(CakeEvent))
+#6 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(189): Controller->startupProcess()
+#7 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#8 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#9 {main}
+2019-02-28 16:28:20 Error: [BadRequestException] The request has been black-holed
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Controller\Component\SecurityComponent.php(239): SecurityComponent->blackHole(Object(UsersController), 'auth')
+#1 [internal function]: SecurityComponent->startup(Object(UsersController))
+#2 C:\xampp\htdocs\cake\lib\Cake\Utility\ObjectCollection.php(128): call_user_func_array(Array, Array)
+#3 [internal function]: ObjectCollection->trigger(Object(CakeEvent))
+#4 C:\xampp\htdocs\cake\lib\Cake\Event\CakeEventManager.php(243): call_user_func(Array, Object(CakeEvent))
+#5 C:\xampp\htdocs\cake\lib\Cake\Controller\Controller.php(677): CakeEventManager->dispatch(Object(CakeEvent))
+#6 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(189): Controller->startupProcess()
+#7 C:\xampp\htdocs\cake\lib\Cake\Routing\Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#8 C:\xampp\htdocs\irohaboard\webroot\index.php(168): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#9 {main}
+2019-02-28 17:18:54 Error: Fatal Error (4): syntax error, unexpected '=>' (T_DOUBLE_ARROW) in [C:\xampp\htdocs\irohaboard\View\Users\admin_soap.ctp, line 35]
+2019-02-28 17:18:54 Error: [FatalErrorException] syntax error, unexpected '=>' (T_DOUBLE_ARROW)
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Error\ErrorHandler.php(213): ErrorHandler::handleFatalError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 35)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 35, Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(933): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 35, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(906): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2019-02-28 17:27:50 Error: Fatal Error (4): syntax error, unexpected 'public' (T_PUBLIC) in [C:\xampp\htdocs\irohaboard\Controller\UsersController.php, line 266]
+2019-02-28 17:27:50 Error: [FatalErrorException] syntax error, unexpected 'public' (T_PUBLIC)
+Request URL: /irohaboard/admin/users/soap/2
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Error\ErrorHandler.php(213): ErrorHandler::handleFatalError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 266)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 266, Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(933): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 266, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(906): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2019-02-28 20:08:53 Error: Fatal Error (4): syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in [C:\xampp\htdocs\irohaboard\View\Users\admin_soap.ctp, line 3]
+2019-02-28 20:08:53 Error: [FatalErrorException] syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';'
+Request URL: /irohaboard/admin/users/soap/4
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Error\ErrorHandler.php(213): ErrorHandler::handleFatalError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3, Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(933): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(906): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2019-02-28 20:09:01 Error: Fatal Error (4): syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in [C:\xampp\htdocs\irohaboard\View\Users\admin_soap.ctp, line 3]
+2019-02-28 20:09:01 Error: [FatalErrorException] syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';'
+Request URL: /irohaboard/admin/users/soap/4
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Error\ErrorHandler.php(213): ErrorHandler::handleFatalError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3, Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(933): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(906): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2019-02-28 20:09:02 Error: Fatal Error (4): syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in [C:\xampp\htdocs\irohaboard\View\Users\admin_soap.ctp, line 3]
+2019-02-28 20:09:02 Error: [FatalErrorException] syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';'
+Request URL: /irohaboard/admin/users/soap/4
+Stack Trace:
+#0 C:\xampp\htdocs\cake\lib\Cake\Error\ErrorHandler.php(213): ErrorHandler::handleFatalError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3, Array)
+#2 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(933): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', 'C:\\xampp\\htdocs...', 3, Array)
+#3 C:\xampp\htdocs\cake\lib\Cake\Core\App.php(906): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
