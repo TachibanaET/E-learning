@@ -195,4 +195,10 @@ class User extends AppModel
 		$this->Record = new Record();
 		$this->Record->deleteAll(array('Record.user_id' => $user_id), false);
 	}
+  
+  public function countId(){
+    $sql = "SELECT COUNT(id) as count FROM ib_users";
+    $count = $this->query($sql);
+    return $count[0][0]['count'];
+  }
 }
