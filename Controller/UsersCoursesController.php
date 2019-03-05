@@ -18,8 +18,15 @@ App::uses('AppController', 'Controller');
  */
 class UsersCoursesController extends AppController
 {
+  public $uses = array('User','LearningTime','Model','Setting','UsersCourse');
 	public $components = array(
 	);
+  public $validate = array(
+    'time' => array(
+      'rule' => 'naturalNumber',
+      'message' => '０位上の値を入力してください。'
+    )
+  );
 
 	public function index()
 	{
@@ -44,6 +51,32 @@ class UsersCoursesController extends AppController
 		// 全体のお知らせもお知らせも存在しない場合
 		if(($info=="") && count($infos)==0)
 			$no_info = "お知らせはありません";
+    /*20190303 勉強時間の提出*/
+    $id = $this->Auth->User('id');
+    $this->set('post_id',$id);
+    if($this->request->is('post')){
+      $this->LearningTime->create();
+      if(isset($this->request->data['submit'])){
+        //提出する時の処理
+        $this->LearningTime->set($this->request->data);
+
+        if($this->LearningTime->validates()){
+
+          $this->LearningTime->create();
+          if($this->LearningTime->save($this->request->data)){
+            $this->Flash->success(__('提出しました、ありがとうございます'));
+            return $this->redirect(array('action' => 'index'));
+          }
+            $this->Flash->error(__('提出は失敗しました、もう一回やってください。'));
+        }
+      }elseif(isset($this->request->data['learningtime'])){
+        return $this->redirect(array(
+          'action' => 'learningtime',
+          $id
+        ));
+      }
+    }
+    /********************/
 		
 		// 受講コース情報の取得
 		$courses = $this->UsersCourse->getCourseRecord( $this->Session->read('Auth.User.id') );
@@ -55,4 +88,22 @@ class UsersCoursesController extends AppController
 		
 		$this->set(compact('courses', 'no_record', 'info', 'infos', 'no_info'));
 	}
+  /* 20190303 public function learningtime()を作成 */
+  public function learningtime(){
+    $id = $this->Auth->User('id');
+    $this->set('post_id',$id);
+    
+    $d_data = $this->LearningTime->findDay($id);
+    $this->set('d_data',$d_data); 
+    
+    $w_data = $this->LearningTime->findWeek($id);
+    $this->set('w_data',$w_data);
+    
+    $wd_data = $this->LearningTime->findWeekData($id);
+    $this->set('wd_data',$wd_data);
+    
+    $m_data = $this->LearningTime->findMonth($id);
+    $this->set('m_data',$m_data);
+  }
+
 }

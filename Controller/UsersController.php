@@ -121,12 +121,9 @@ class UsersController extends AppController
               mb_convert_variables('SJIS','UTF-8',$post['Soap']['body']);
               fputcsv($res,array($post['Soap']['created'],$post['Soap']['body']));
             }
-            
             fclose($res);
-            
-            header('Content-Type: text/csv');
+            header('Content-Type: application/octet-stream');
             header('Content-Disposition: attachment; filename ='.$csvFileName);
-            
             header('Content-Length: ' . filesize($csvFileName));
             readfile($csvFileName);
             exit();
@@ -145,7 +142,6 @@ class UsersController extends AppController
       )  
     );
     $this->set('rows',$this->Paginator->paginate('Soap'));
-    
   }
 /**************/
 	public function admin_clear($user_id)
