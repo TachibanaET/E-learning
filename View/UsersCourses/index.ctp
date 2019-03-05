@@ -19,6 +19,7 @@
 	<div class="panel panel-success">
 		<div class="panel-heading"><?php echo __('お知らせ'); ?></div>
 		<div class="panel-body">
+      <div class="panel-body-info">
 			<?php if($info!=""){?>
 			<div class="well">
 				<?php
@@ -43,8 +44,29 @@
 			<div class="text-right"><?php echo $this->Html->link(__('一覧を表示'), array('controller' => 'infos', 'action' => 'index')); ?></div>
 			<?php }?>
 			<?php echo $no_info;?>
+      </div>
 		</div>
 	</div>
+  <!--20190303-->
+  <div class="time">
+    <?php 
+      echo $this->Form->create('LearningTime');
+      echo $this->Form->hidden('user_id',array('value' => $post_id));
+      echo "<form style = 'display: inline'>";
+      echo $this->Form->input('time',array('label' => __('今日のプログラミング勉強時間は何（分）ですか？')));
+    ?>
+    <div class = "submit">
+      <input name = "submit" value = "提出" type = "submit">
+      <input name = "learningtime" value = "学習時間履歴" type = "submit">
+      <?php
+      /*echo $this->Form->submit('提出',array('name' => 'submit','div' => false));
+      echo $this->Form->submit('学習時間履歴',array('name' => 'learningtime'));
+      echo "</form>";*/
+      echo $this->Form->end();
+    ?>
+    </div>
+  </div>
+  <!--20190303-->
 	<div class="panel panel-info">
 	<div class="panel-heading"><?php echo __('コース一覧'); ?></div>
 	<div class="panel-body">

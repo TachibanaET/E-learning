@@ -65,8 +65,8 @@
 				<th nowrap class="ib-col-datetime"><?php echo $this->Paginator->sort('UserCourse.course_title', '受講コース'); ?></th>
 				<th class="ib-col-datetime"><?php echo $this->Paginator->sort('last_logined', '最終ログイン日時'); ?></th>
 				<th class="ib-col-datetime"><?php echo $this->Paginator->sort('created', '作成日時'); ?></th>
-        <!--20190225 -->
-        <th class="ib-soap"><?php echo $this->Paginator->sort('soap','SOAP');?></th>
+        <!--20190225 
+        <th class="ib-soap"><?php echo $this->Paginator->sort('soap','SOAP');?></th> -->
 				<th class="ib-col-action"><?php echo __('Actions'); ?></th>
 			</tr>
 		</thead>
@@ -83,14 +83,12 @@
 		<td class="ib-col-datetime"><?php echo h(Utils::getYMDHN($user['User']['created'])); ?>&nbsp;</td>
 
 
-
-    <!--20190225 -->
+<!--
     <td class = "ib-soap">
     <button type = "button" class = "btn btn-success"
       onclick ="location.href='<?php echo Router::url(array('action' => 'admin_soap', $user['User']['id']))?>'">編集</button>
     </td>
-    <!--                        -->
-
+-->
 
 		<td class="ib-col-action">
 			<button type="button" class="btn btn-success"
