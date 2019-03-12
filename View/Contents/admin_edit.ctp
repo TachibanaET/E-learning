@@ -2,14 +2,23 @@
 <?php $this->start('css-embedded'); ?>
 <?php echo $this->Html->css('summernote.css');?>
 <style type='text/css'>
-	input[name="data[Content][url]"]
+	.form-control-upload
 	{
-		display:inline-block;
-		margin-right:10px;
+		display			: inline-block !important;
+		margin-right	: 10px !important;
+		widht			: 85%;
 	}
-	label span
+	
+	.form-control-filename
 	{
-		font-weight: normal;
+		border			: none !important;
+		box-shadow		: none !important;
+	}
+	
+	label span,
+	.status-exp
+	{
+		font-weight		: normal;
 	}
 </style>
 <?php $this->end(); ?>
@@ -17,12 +26,9 @@
 <?php echo $this->Html->script('summernote.min.js');?>
 <?php echo $this->Html->script('lang/summernote-ja-JP.js');?>
 <script>
-	//$('input[name="data[Content][kind]"]:radio').val(['text']);
-	var _editor;
-	
 	$(document).ready(function()
 	{
-		$url = $('input[name="data[Content][url]"]');
+		$url = $('.form-control-upload');
 
 		$url.after('<input id="btnUpload" type="button" value="アップロード">');
 
@@ -70,6 +76,7 @@
 		
 		$(".kind").hide();
 		$(".kind-"+content_kind).show();
+		$("#btnPreview").hide();
 		
 		switch(content_kind)
 		{
@@ -78,49 +85,35 @@
 				// テキストが存在しない場合、空文字にする。
 				if($('<span>').html($("#ContentBody").val()).text()=="")
 					$("#ContentBody").val("");
+				$("#btnPreview").show();
 				break;
 			case 'html': // リッチテキスト
 				// リッチテキストエディタを起動
 				CommonUtil.setRichTextEditor('#ContentBody', <?php echo (Configure::read('use_upload_image') ? 'true' : 'false')?>, '<?php echo $this->webroot ?>');
+				$("#btnPreview").show();
 				break;
 			case 'movie': // 動画
-				$("input[name='data[Content][url]']").css('width', '85%');
+				$(".form-control-upload").css('width', '85%');
 				$("#btnUpload").show();
+				$("#btnPreview").show();
 				break;
 			case 'url':
-				$("input[name='data[Content][url]']").css('width', '100%');
+				$(".form-control-upload").css('width', '100%');
 				$("#btnUpload").hide();
+				$("#btnPreview").show();
 				break;
 			case 'file':
-				$("input[name='data[Content][url]']").css('width', '85%');
+				$(".form-control-upload").css('width', '85%');
 				$("#btnUpload").show();
 				break;
 			case 'test':
 				break;
 		}
 	}
-
+	
 	function preview()
 	{
 		var content_kind = $('input[name="data[Content][kind]"]:checked').val();
-		
-		if(content_kind=='label')
-		{
-			alert('ラベルはプレビューできません');
-			return;
-		}
-		
-		if(content_kind=='file')
-		{
-			alert('配布資料はプレビューできません');
-			return;
-		}
-		
-		if(content_kind=='test')
-		{
-			alert('テストはプレビューできません');
-			return;
-		}
 		
 		$.ajax({
 			url: "<?php echo Router::url(array('action' => 'preview')) ?>",
@@ -145,10 +138,13 @@
 			}
 		});
 	}
-
-	function setURL(url)
+	
+	function setURL(url, file_name)
 	{
-		$('input[name="data[Content][url]"]').val(url);
+		$('.form-control-upload').val(url);
+		
+		if(file_name)
+			$('.form-control-filename').val(file_name);
 	}
 </script>
 <?php $this->end(); ?>
@@ -156,7 +152,7 @@
 <div class="contents form">
 	<?php
 		$this->Html->addCrumb('コース一覧', array('controller' => 'courses', 'action' => 'index'));
-		$this->Html->addCrumb(h($course['Course']['title']));
+		$this->Html->addCrumb($course['Course']['title'],  array('controller' => 'contents', 'action' => 'index', $course['Course']['id']));
 
 		echo $this->Html->getCrumbs(' / ');
 	?>
@@ -171,7 +167,7 @@
 				echo $this->Form->input('title',	array('label' => 'コンテンツタイトル'));
 				echo $this->Form->input('kind',	array(
 					'type' => 'radio',
-					'before' => '<label class="col col-md-3 control-label">コンテンツ種別</label>',
+					'before' => '<label class="col col-md-3 col-sm-4 control-label">コンテンツ種別</label>',
 					'separator'=>"<br>",
 					'disabled'=>false,
 					'legend' => false,
@@ -181,7 +177,11 @@
 				);
 
 				echo "<div class='kind kind-movie kind-url kind-file'>";
-				echo $this->Form->input('url',		array('label' => 'URL'));
+				echo $this->Form->input('url',		array('label' => 'URL', 'class' => 'form-control form-control-upload'));
+				echo "</div>";
+				
+				echo "<div class='kind kind-file'>";
+				echo $this->Form->input('file_name', array('label' => 'ファイル名', 'class' => 'form-control-filename', 'readonly' => 'readonly'));
 				echo "</div>";
 
 				echo "<div class='kind kind-text kind-html'>";
@@ -193,13 +193,25 @@
 				echo $this->Form->input('pass_rate', array('label' => '合格とする得点率 (0-100%)'));
 				echo "</span>";
 
+				echo $this->Form->input('status',	array(
+					'type' => 'radio',
+					'before' => '<label class="col col-md-3 col-sm-4 control-label">ステータス</label>',
+					'after' => '<div class="col col-md-3 col-sm-4"></div><span class="status-exp">　非公開と設定した場合、管理者権限でログインした場合のみ表示されます。</span>',
+					'separator' => '　', 
+					'legend' => false,
+					'class' => false,
+					'default' => 1,
+					'options' => Configure::read('content_status')
+					)
+				);
+
 				echo "<span class='kind kind-text kind-html kind-movie kind-url kind-file kind-test'>";
 				echo $this->Form->input('comment', array('label' => '備考'));
 				echo "</span>";
 			?>
 			<div class="form-group">
 				<div class="col col-md-9 col-md-offset-3">
-					<button class="btn btn-default" value="プレビュー" onclick="preview(); return false;" type="submit">プレビュー</button>
+					<button id="btnPreview" class="btn btn-default" value="プレビュー" onclick="preview(); return false;" type="submit">プレビュー</button>
 					<?php echo $this->Form->submit('保存', Configure::read('form_submit_defaults')); ?>
 				</div>
 			</div>

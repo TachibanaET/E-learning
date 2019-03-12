@@ -33,7 +33,7 @@ echo '<li class="'.$is_active.'">'.$this->Html->link(__('学習履歴'), array('
 //echo '<li class="'.$is_active.'">'.$this->Html->link(__('SOAP一覧'), array('controller' => 'soaps', 'action' => 'index')).'</li>';
 
 $is_active = ($this->name=='LearningTime') ? ' active' : '';
-echo '<li class="'.$is_active.'">'.$this->Html->link(__('勉強時間一覧'), array('controller' => 'learningtimes', 'action' => 'index')).'</li>';
+echo '<li class="'.$is_active.'">'.$this->Html->link(__('勉強時間一覧'), array('controller' => 'LearningTimes', 'action' => 'index')).'</li>';
 
 if($loginedUser['role']=='admin')
 {

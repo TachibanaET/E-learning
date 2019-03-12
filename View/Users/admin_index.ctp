@@ -56,23 +56,20 @@
 		?>
 	</div>
 	<table>
-		<thead>
-			<tr>
-				<th nowrap><?php echo $this->Paginator->sort('username', 'ログインID'); ?></th>
-				<th nowrap class="col-width"><?php echo $this->Paginator->sort('name', '氏名'); ?></th>
-				<th nowrap><?php echo $this->Paginator->sort('role', '権限'); ?></th>
-				<th nowrap><?php echo $this->Paginator->sort('UserGroup.group_title', '所属グループ'); ?></th>
-				<th nowrap class="ib-col-datetime"><?php echo $this->Paginator->sort('UserCourse.course_title', '受講コース'); ?></th>
-				<th class="ib-col-datetime"><?php echo $this->Paginator->sort('last_logined', '最終ログイン日時'); ?></th>
-				<th class="ib-col-datetime"><?php echo $this->Paginator->sort('created', '作成日時'); ?></th>
-        <!--20190225 
-        <th class="ib-soap"><?php echo $this->Paginator->sort('soap','SOAP');?></th> -->
-				<th class="ib-col-action"><?php echo __('Actions'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-	<?php foreach ($users as $user): 
-  ?>
+	<thead>
+	<tr>
+		<th nowrap><?php echo $this->Paginator->sort('username', 'ログインID'); ?></th>
+		<th nowrap class="col-width"><?php echo $this->Paginator->sort('name', '氏名'); ?></th>
+		<th nowrap><?php echo $this->Paginator->sort('role', '権限'); ?></th>
+		<th nowrap><?php echo $this->Paginator->sort('group_title', '所属グループ'); ?></th>
+		<th nowrap class="ib-col-datetime"><?php echo $this->Paginator->sort('course_title', '受講コース'); ?></th>
+		<th class="ib-col-datetime"><?php echo $this->Paginator->sort('last_logined', '最終ログイン日時'); ?></th>
+		<th class="ib-col-datetime"><?php echo $this->Paginator->sort('created', '作成日時'); ?></th>
+		<th class="ib-col-action"><?php echo __('Actions'); ?></th>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($users as $user): ?>
 	<tr>
 		<td><?php echo h($user['User']['username']); ?>&nbsp;</td>
 		<td><?php echo h($user['User']['name']); ?></td>
@@ -81,15 +78,6 @@
 		<td><div class="reader" title="<?php echo h($user['UserCourse']['course_title']); ?>"><p><?php echo h($user['UserCourse']['course_title']); ?>&nbsp;</p></div></td>
 		<td class="ib-col-datetime"><?php echo h(Utils::getYMDHN($user['User']['last_logined'])); ?>&nbsp;</td>
 		<td class="ib-col-datetime"><?php echo h(Utils::getYMDHN($user['User']['created'])); ?>&nbsp;</td>
-
-
-<!--
-    <td class = "ib-soap">
-    <button type = "button" class = "btn btn-success"
-      onclick ="location.href='<?php echo Router::url(array('action' => 'admin_soap', $user['User']['id']))?>'">編集</button>
-    </td>
--->
-
 		<td class="ib-col-action">
 			<button type="button" class="btn btn-success"
 				onclick="location.href='<?php echo Router::url(array('action' => 'edit', $user['User']['id'])) ?>'">編集</button>
@@ -106,7 +94,7 @@
 		?>
 		</td>
 	</tr>
-<?php endforeach; ?>
+	<?php endforeach; ?>
 	</tbody>
 	</table>
 	<?php echo $this->element('paging');?>

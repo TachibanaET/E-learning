@@ -1,5 +1,6 @@
 <?php echo $this->element('admin_menu');?>
 <?php $this->start('css-embedded'); ?>
+<?php $this->Html->script('canvasjs.min',array('inline' => false));?>
 <style type='text/css'>
 	#RecordFromDateYear,
 	#RecordToDateYear
@@ -89,6 +90,36 @@
 		$("#RecordAdminIndexForm").submit();
 		$("#RecordCmd").val("");
 	}
+
+    function recordGraph(){
+      var data_list = [];
+      <?php foreach($record_array as $info):?>
+        var label_d = '<?php echo $info['username'];?>'
+        var y_d = '<?php echo $info['score'];?>'
+        var y_d = Number(y_d);
+        var title_d = '<?php echo $record['Content']['title'];?>'
+        data_list.push({
+          label: label_d,
+          y: y_d    
+        });
+      <?php endforeach;?>
+      var chart = new CanvasJS.Chart("chartContainer",{
+        height: 1000,
+        axisX:{
+          //labelAutoFit: true  
+          labelFontSize: 20,
+          interval: 2,
+        },
+        title:{
+          text: title_d    
+        },
+        data:[{
+          type: 'bar',
+          dataPoints: data_list    
+        }]
+      });
+      chart.render();
+    }
 </script>
 <?php $this->end(); ?>
 <div class="records index">
@@ -100,12 +131,21 @@
 			echo $this->Form->submit(__('検索'),	array('class' => 'btn btn-info', 'div' => false));
 			echo $this->Form->hidden('cmd');
 			echo '<button type="button" class="btn btn-default" onclick="downloadCSV()">'.__('CSV出力').'</button>';
-			echo '</div>';
-			
+            ?>
+        <button id = "scoreGraph" type = "button">成績グラフ</button>
+        </div>
+        <script>
+          var scoreGraphButton = document.getElementById("scoreGraph");
+          if(scoreGraphButton != null){
+            scoreGraphButton.addEventListener("click",recordGraph);    
+          }
+        </script>
+        <?php
 			echo '<div class="ib-row">';
 			echo $this->Form->input('course_id',		array('label' => 'コース :', 'options'=>$courses, 'selected'=>$course_id, 'empty' => '全て', 'required'=>false, 'class'=>'form-control'));
 			echo $this->Form->input('content_category',	array('label' => 'コンテンツ種別 :', 'options'=>Configure::read('content_category'), 'selected'=>$content_category, 'empty' => '全て', 'required'=>false, 'class'=>'form-control'));
-			echo $this->Form->input('contenttitle',		array('label' => 'コンテンツ名 :', 'value'=>$contenttitle, 'class'=>'form-control'));
+			//echo $this->Form->input('contenttitle',		array('label' => 'コンテンツ名 :', 'value'=>$contenttitle, 'class'=>'form-control'));
+            echo $this->Form->input('contenttitle', array('label' => 'コンテンツ名:', 'options' => $contents, 'selected' => $contenttitle, 'empty' => '全て', 'required' => false, 'class' => 'form-control'));
 			echo '</div>';
 			
 			echo '<div class="ib-row">';
@@ -149,11 +189,10 @@
 	<tr>
 		<th nowrap><?php echo $this->Paginator->sort('course_id', 'コース'); ?></th>
 		<th nowrap><?php echo $this->Paginator->sort('content_id', 'コンテンツ'); ?></th>
-		<th nowrap><?php echo $this->Paginator->sort('user_id', '氏名'); ?></th>
+		<th nowrap><?php echo $this->Paginator->sort('User.name', '氏名'); ?></th>
 		<th nowrap class="ib-col-center"><?php echo $this->Paginator->sort('score', '得点'); ?></th>
 		<th class="ib-col-center" nowrap><?php echo $this->Paginator->sort('pass_score', '合格点'); ?></th>
 		<th nowrap class="ib-col-center"><?php echo $this->Paginator->sort('is_passed', '結果'); ?></th>
-		<th nowrap class="ib-col-center"><?php echo $this->Paginator->sort('is_complete', '完了'); ?></th>
 		<th class="ib-col-center" nowrap><?php echo $this->Paginator->sort('understanding', '理解度'); ?></th>
 		<th class="ib-col-center"><?php echo $this->Paginator->sort('study_sec', '学習時間'); ?></th>
 		<th class="ib-col-datetime"><?php echo $this->Paginator->sort('created', '学習日時'); ?></th>
@@ -168,7 +207,6 @@
 		<td class="ib-col-center"><?php echo h($record['Record']['score']); ?>&nbsp;</td>
 		<td class="ib-col-center"><?php echo h($record['Record']['pass_score']); ?>&nbsp;</td>
 		<td nowrap class="ib-col-center"><a href="javascript:openTestRecord(<?php echo h($record['Content']['id']); ?>, <?php echo h($record['Record']['id']); ?>);"><?php echo Configure::read('record_result.'.$record['Record']['is_passed']); ?></a></td>
-		<td nowrap class="ib-col-center"><?php echo h(Configure::read('record_complete.'.$record['Record']['is_complete'])); ?>&nbsp;</td>
 		<td nowrap class="ib-col-center"><?php echo h(Configure::read('record_understanding.'.$record['Record']['understanding'])); ?>&nbsp;</td>
 		<td class="ib-col-center"><?php echo h(Utils::getHNSBySec($record['Record']['study_sec'])); ?>&nbsp;</td>
 		<td class="ib-col-date"><?php echo h(Utils::getYMDHN($record['Record']['created'])); ?>&nbsp;</td>
@@ -177,4 +215,7 @@
 	</tbody>
 	</table>
 	<?php echo $this->element('paging');?>
+</div>
+<div style = "width:100%; height:500px; overflow-y:scroll">
+  <div id = "chartContainer"></div>
 </div>

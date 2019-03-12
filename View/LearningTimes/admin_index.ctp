@@ -1,28 +1,16 @@
 <?php echo $this->element('admin_menu');?>
-<?php print_r($WeekAllData);?>
+<?php //print_r($WeekAllData);?>
+<?php
+  $this->Html->script('canvasjs.min',array('inline'=>false));
+?>
 <style>
 .time_sum{
   font-size: 20px;
 }
 </style>
-<!--
-<div class = "time_sum">
-  <div class = "time_day"><?php echo __("今日の勉強時間は $d_data 分です");?></div>
-  <div class = "time_week"><?php echo __("今週の勉強時間は $w_data 分です");?></div>
-  <div class = "time_month"><?php echo __("今月の勉強時間は $m_data 分です");?></div>
-</div>
--->
-<?php //echo $wd_data[0][0]['week'];?>
-<div id = "chartContainner"></div>
-<?php
-  $this->Html->script('canvasjs.min',array('inline'=>false));
-?>
-<!--<script type = "text/javascript" src = "canvasjs.min.js"></script>-->
-<?php
-  //$json_string = json_encode($wd_data);
-?>
-<script type = "text/javascript" >
-  var data_list = [];
+<script language = "javascript" type = "text/javascript" >
+  function makeWeek(){
+    var data_list = [];
   <?php foreach($WeekAllData as $wdata): ?>
     var label_d = '<?php echo $wdata['username'];?>';
     var y_d = '<?php echo $wdata['sum'];?>';
@@ -32,21 +20,66 @@
       y:y_d
     });
   <?php endforeach; ?>
-  console.log(data_list);
-</script>
-<div id = "chartContainer"></div>
-<script>
   var chart = new CanvasJS.Chart("chartContainer",{
     title:{
-      text: "今週の勉強時間"
+      text: "今週のプログラミング勉強時間一覧"
     },
+    axisX:{
+      //labelAutoFit: true  
+      interval: 2,
+    },
+    height: 500,
     data:[{
-      type: 'line',
+      //type: 'column',
+      type: 'bar',
       dataPoints: data_list
     }]
   });
-  chart.render();
+    chart.render();
+  }
+
+  function makeMonth(){
+    var data_list = [];
+  <?php foreach($MonthAllData as $wdata): ?>
+    var label_d = '<?php echo $wdata['username'];?>';
+    var y_d = '<?php echo $wdata['sum'];?>';
+    var y_d = Number(y_d);
+    data_list.push({
+      label: label_d,
+      y:y_d
+    });
+  <?php endforeach; ?>
+  var chart = new CanvasJS.Chart("chartContainer",{
+    title:{
+      text: "今月のプログラミング勉強時間一覧"
+    },
+    axisX:{
+      //labelAutoFit: true  
+      interval: 2,
+    },
+    height: 500,
+    data:[{
+      //type: 'column',
+      type: 'bar',
+      dataPoints: data_list
+    }]
+  });
+    chart.render();
+  }
 </script>
-<?php
-  $this->Html->script('/js/graph');
-?>
+<div>
+  <button id = "Week" type = "button">週間</button>
+  <button id = "Month" type = "button">月間</button>
+</div>
+<script>
+  var weekButton = document.getElementById("Week");
+  if(weekButton != null){
+    weekButton.addEventListener("click",makeWeek);    
+  }
+  
+  var monthButton = document.getElementById("Month");
+  if(monthButton != null){
+    monthButton.addEventListener("click",makeMonth);    
+  }
+</script>
+<div id = "chartContainer"></div>
