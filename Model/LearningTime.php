@@ -33,7 +33,7 @@ class LearningTime extends AppModel{
   }
 
   public function findWeekData($user_id){
-    $sql =     
+    /*$sql =     
       "SELECT(CASE
       WHEN DATE_FORMAT(created, '%W') = 'Monday'    THEN '月曜日'
       WHEN DATE_FORMAT(created, '%W') = 'Tuesday'   THEN '火曜日'
@@ -46,7 +46,13 @@ class LearningTime extends AppModel{
       SUM(time) AS sum
       FROM ib_learning_times
       WHERE (user_id = $user_id AND WEEK(created) = WEEK(NOW()))
-      GROUP BY week";
+      GROUP BY week";*/
+    $sql =     
+      "SELECT (dayofweek(created)) AS week,
+      SUM(time) AS sum
+      FROM ib_learning_times
+      WHERE (user_id = $user_id AND WEEK(created) = WEEK(NOW()))
+      GROUP BY week ORDER BY week ASC";
     $wd_data = $this->query($sql);
     return $wd_data;
   }
@@ -64,8 +70,26 @@ class LearningTime extends AppModel{
   public function findWeekAll($count){
     $sql = "SELECT user_id,SUM(time) as sum FROM ib_learning_times 
         WHERE user_id <= $count and (WEEK(created) = WEEK(NOW())) 
-        GROUP BY user_id";
+        GROUP BY user_id ORDER BY sum DESC";
     $weekAllData = $this->query($sql);
     return $weekAllData;
+  }
+
+  public function findMonthAll($count){
+    $sql = "SELECT user_id,SUM(time) as sum FROM ib_learning_times 
+        WHERE user_id <= $count and (MONTH(created) = MONTH(NOW())) 
+        GROUP BY user_id ORDER BY sum DESC";
+    $data = $this->query($sql);
+    return $data;
+  }
+
+  public function findMonthUserAll($user_id){
+    $sql = "SELECT DATE_FORMAT(created, '%Y/%m/%d') as date,
+      SUM(time) as sum
+      FROM ib_learning_times
+      WHERE (user_id = $user_id AND MONTH(created) = MONTH(NOW()))
+      GROUP BY date ORDER BY date ASC";    
+    $data = $this->query($sql);
+    return $data;
   }
 }
