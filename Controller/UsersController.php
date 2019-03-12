@@ -24,7 +24,7 @@ class UsersController extends AppController
 			'Paginator',
 			'Security' => array(
 				'csrfUseOnce' => false,
-				'unlockedActions' => array('admin_soap','login', 'admin_login'),
+				'unlockedActions' => array('login', 'admin_login'),
 			),
 			'Search.Prg',
 			'Cookie',
@@ -70,80 +70,7 @@ class UsersController extends AppController
 				'action' => 'index'
 		));
 	}
-/*20190226追加*/
-  public function admin_soap($id = null){
 
-    $this->loadModel('Soap','Record');
-    $this->User->id = $id;
-    if(!$this->User->exists()){
-      throw new NotFoundException(__('Invalid user'));
-    }
-    $post_user = $this->Soap->findSoap($id);
-    $this->set('posts',$post_user);
-    $this->set('post_id',$id);
-
-    if($this->request->is('post')){
-      $this->Soap->create();
-      if($this->request->data){
-        //もし、SOAPのSubmitの時
-        if(isset($this->request->data['submit'])){
-          $this->request->data['Soap']['body'] = nl2br($this->request->data['Soap']['body']);
-        if($this->Soap->save($this->request->data)){
-          
-          $this->Flash->success(__('SOAPを保存しました'));
-          return $this->redirect(array('action' => 'index'));
-        }
-          $this->Flash->error(__('Unable to add your post.'));
-          //もし、CSV出力の時
-        }elseif(isset($this->request->data['csv_output'])){
-          
-          try{
-            date_default_timezone_set('Asia/Tokyo');
-            $now_time = date('Y_m_d',time());
-            $user_info = $this->User->find('all',
-              array(
-                'conditions' => array(
-                  'User.id' => "$id"
-                )
-              )
-            );
-            $user_name = $user_info[0]['User']['name'];
-            $csvFileName = "$user_name" . "$now_time" . '.csv';
-            $res = fopen($csvFileName, 'w');
-              if($res === FALSE){
-                throw new Exception('ファイルの書き込みに失敗しました。');
-              }
-            $dataList = array('作成日時','SOAPの内容');
-            mb_convert_variables('SJIS','UTF-8',$dataList);
-            fputcsv($res,$dataList);
-            foreach($post_user as $post){
-              mb_convert_variables('SJIS','UTF-8',$post['Soap']['created']);
-              mb_convert_variables('SJIS','UTF-8',$post['Soap']['body']);
-              fputcsv($res,array($post['Soap']['created'],$post['Soap']['body']));
-            }
-            fclose($res);
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename ='.$csvFileName);
-            header('Content-Length: ' . filesize($csvFileName));
-            readfile($csvFileName);
-            exit();
-          }catch(Exception $e){
-            echo $e->getMessage();
-          }
-        }
-      } 
-    }
-    
-    $this->Paginator->settings = array(
-      'Soap' => array(
-        'limit' => 5,
-        'conditions' => 'created',
-        'order' => array('Soap.created' => 'desc')
-      )  
-    );
-    $this->set('rows',$this->Paginator->paginate('Soap'));
-  }
-/**************/
 	public function admin_clear($user_id)
 	{
 		$this->User->deleteUserRecords($user_id);
@@ -258,6 +185,9 @@ class UsersController extends AppController
 		if($group_id != "")
 			$conditions['User.id'] = $this->Group->getUserIdByGroupID($group_id);
 		
+		$this->User->virtualFields['group_title']  = 'UserGroup.group_title'; // 外部結合テーブルのフィールドによるソート用
+		$this->User->virtualFields['course_title'] = 'UserCourse.course_title'; // 外部結合テーブルのフィールドによるソート用
+		
 		$this->paginate = array(
 			'User' => array(
 				'fields' => array('*', 'UserGroup.group_title', 'UserCourse.course_title'),
@@ -281,19 +211,8 @@ class UsersController extends AppController
 		catch (Exception $e)
 		{
 			// 指定したページが存在しなかった場合（主に検索条件変更時に発生）、1ページ目を設定
-			$this->request->params['named']['page']=1;
+			$this->request->params['named']['page'] = 1;
 			$result = $this->paginate();
-		}
-
-		// 独自カラムの場合、自動でソートされないため、個別の実装が必要
-		if (isset($this->request->named['sort']) && $this->request->named['sort'] == 'UserGroup.group_title')
-		{
-			$result = Set::sort($result, '/UserGroup/group_title', $this->request->named['direction']);
-		}
-
-		if (isset($this->request->named['sort']) && $this->request->named['sort'] == 'UserCourse.course_title')
-		{
-			$result = Set::sort($result, '/UserCourse/course_title', $this->request->named['direction']);
 		}
 
 		$this->set('groups',   $this->User->Group->find('list'));
@@ -406,29 +325,6 @@ class UsersController extends AppController
 
 	public function admin_login()
 	{
-		// 初期アカウント作成確認
-		$options = array(
-			'conditions' => array(
-				'User.role' => 'admin'
-			)
-		);
-
-		$data = $this->User->find('first', $options);
-
-		if(!$data)
-		{
-			// 管理者アカウントが存在しない場合、管理者アカウントを作成
-			$data = array(
-				'username' => 'root',
-				'password' => 'irohaboard',
-				'name' => 'root',
-				'role' => 'admin',
-				'email' => 'info@example.com'
-			);
-
-			$this->User->save($data);
-		}
-
 		$this->login();
 	}
 
@@ -436,9 +332,4 @@ class UsersController extends AppController
 	{
 		$this->logout();
 	}
-  /*20190228 追加*/
-  public function beforeFileter(){
-    parent::beforeFilter();
-    $this->Security->unlockedActions = array('admin_soap');
-  }
 }

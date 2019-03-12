@@ -60,7 +60,7 @@ class RecordsController extends AppController
 	{
 		// SearchPluginの呼び出し
 		$this->Prg->commonProcess();
-		
+	    $this->loadModel('Content');	
 		// Model の filterArgs に定義した内容にしたがって検索条件を作成
 		// ただしアソシエーションテーブルには対応していないため、独自に検索条件を設定する必要がある
 		$conditions = $this->Record->parseCriteria($this->Prg->parsedParams());
@@ -100,10 +100,19 @@ class RecordsController extends AppController
 		$to_date	= (isset($this->request->query['to_date'])) ? 
 			$this->request->query['to_date'] : 
 				array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'));
-		
+
+	    /*コンテンツを選択する*/
+        if($contenttitle != ""){
+            $contentInformation = $this->Content->findTitle($contenttitle);
+            $contenttitleString = $contentInformation['Content']['title'];
+            $conditions['Content.title'] = $contenttitleString;       
+        }
+        /****/
+        /*デフォルト	
 		if($contenttitle != "")
 			$conditions['Content.title like'] = '%'.$contenttitle.'%';
-		
+		*/
+
 		// 学習日付による絞り込み
 		$conditions['Record.created BETWEEN ? AND ?'] = array(
 			implode("/", $from_date), 
@@ -124,13 +133,14 @@ class RecordsController extends AppController
 			$fp = fopen('php://output','w');
 			
 			$options = array(
-				'conditions' => $conditions
+				'conditions'	=> $conditions,
+				'order'			=> 'Record.created desc'
 			);
 			
 			$this->Record->recursive = 0;
 			$rows = $this->Record->find('all', $options);
 			
-			$header = array("コース", "コンテンツ", "氏名", "得点", "合格点", "結果", "完了", "理解度", "学習時間", "学習日時");
+			$header = array("コース", "コンテンツ", "氏名", "得点", "合格点", "結果", "理解度", "学習時間", "学習日時");
 			
 			mb_convert_variables("SJIS-WIN", "UTF-8", $header);
 			fputcsv($fp, $header);
@@ -144,7 +154,6 @@ class RecordsController extends AppController
 					$row['Record']['score'], 
 					$row['Record']['pass_score'], 
 					Configure::read('record_result.'.$row['Record']['is_passed']), 
-					Configure::read('record_complete.'.$row['Record']['is_complete']), 
 					Configure::read('record_understanding.'.$row['Record']['understanding']), 
 					Utils::getHNSBySec($row['Record']['study_sec']), 
 					Utils::getYMDHN($row['Record']['created']),
@@ -159,6 +168,7 @@ class RecordsController extends AppController
 		}
 		else
 		{
+            debug($conditions);
 			$this->Paginator->settings['conditions'] = $conditions;
 			$this->Paginator->settings['order']      = 'Record.created desc';
 			$this->Record->recursive = 0;
@@ -180,6 +190,7 @@ class RecordsController extends AppController
 			$this->Group = new Group();
 			$this->Course = new Course();
 			$this->User = new User();
+            $this->Content = new Content();
 			//debug($this->User);
 			
 			$this->set('groups',     $this->Group->find('list'));
@@ -189,9 +200,37 @@ class RecordsController extends AppController
 			$this->set('course_id',  $course_id);
 			$this->set('user_id',    $user_id);
 			$this->set('content_category',	$content_category);
+            $this->set('contents',   $this->Content->find('list'));
 			$this->set('contenttitle',		$contenttitle);
 			$this->set('from_date', $from_date);
 			$this->set('to_date', $to_date);
+
+            /*グラフ出力用*/
+            $options = array(
+              'conditions' => $conditions
+            );
+            $rows = $this->Record->find('all',$options);
+            $record_array = [];
+            foreach($rows as $row){
+              $index = array_search($row['User']['name'], array_column($record_array,'username'));
+              if($index != null){
+                $record_array[$index]['score'] = $record_array[$index]['score'] > $row['Record']['score'] ? $record_array[$index]['score'] : $row['Record']['score'];
+                continue;
+              }else{
+                $array = array(
+                  'username' => $row['User']['name'],
+                  'score' => $row['Record']['score']
+                );
+                array_push($record_array,$array);
+              }
+              //昇順ソート
+              foreach($record_array as $key => $value){
+                $sort[$key] = $value['score'];
+              }
+              array_multisort($sort,SORT_DESC,$record_array);
+            }
+            $this->set('record_array', $record_array);
+            /**************/
 		}
 	}
 

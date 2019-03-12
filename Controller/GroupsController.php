@@ -23,6 +23,7 @@ class GroupsController extends AppController
 	public function admin_index()
 	{
 		$this->Group->recursive = 0;
+		$this->Group->virtualFields['course_title'] = 'GroupCourse.course_title'; // 外部結合テーブルのフィールドによるソート用
 		
 		$this->Paginator->settings = array(
 			'fields' => array('*', 'GroupCourse.course_title'),
@@ -36,20 +37,6 @@ class GroupsController extends AppController
 		);
 		
 		$this->set('groups', $this->Paginator->paginate());
-	}
-
-	public function admin_view($id = null)
-	{
-		if (! $this->Group->exists($id))
-		{
-			throw new NotFoundException(__('Invalid group'));
-		}
-		$options = array(
-				'conditions' => array(
-						'Group.' . $this->Group->primaryKey => $id
-				)
-		);
-		$this->set('group', $this->Group->find('first', $options));
 	}
 
 	public function admin_add()

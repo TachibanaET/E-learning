@@ -32,18 +32,21 @@ class SettingsController extends AppController {
 	{
 		if ($this->request->is(array('post', 'put')))
 		{
+			if(Configure::read('demo_mode'))
+				return;
+			
 			$this->Setting->setSettings($this->request->data['Setting']);
 			
 			foreach ($this->request->data['Setting'] as $key => $value)
 			{
 				$this->Session->Write('Setting.'.$key, $value);
 			}
+			
+			$this->Flash->success(__('設定が保存されました'));
 		}
 		
-		$color = $this->Session->read('Setting.color');
-		
 		$this->Setting->recursive = 0;
+		$this->set('settings',		$this->Setting->getSettings());
 		$this->set('colors',		Configure::read('theme_colors'));
-		$this->set('color',			$color);
 	}
 }

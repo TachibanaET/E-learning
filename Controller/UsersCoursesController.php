@@ -100,10 +100,39 @@ class UsersCoursesController extends AppController
     $this->set('w_data',$w_data);
     
     $wd_data = $this->LearningTime->findWeekData($id);
+    foreach($wd_data as &$wdata):
+      switch($wdata[0]['week']){
+        case 1:
+          $wdata[0]['week'] = "日曜日";
+          break;
+        case 2:
+          $wdata[0]['week'] = "月曜日";
+          break;
+        case 3:
+          $wdata[0]['week'] = "火曜日";
+          break;
+        case 4:
+          $wdata[0]['week'] = "水曜日";
+          break;
+        case 5:
+          $wdata[0]['week'] = "木曜日";
+          break;
+        case 6:
+          $wdata[0]['week'] = "金曜日";
+          break;
+        case 7:
+          $wdata[0]['week'] = "土曜日";
+          break;
+      };
+    endforeach;
+    unset($wdata);
     $this->set('wd_data',$wd_data);
     
     $m_data = $this->LearningTime->findMonth($id);
     $this->set('m_data',$m_data);
+    
+    $ma_data = $this->LearningTime->findMonthUserAll($id);
+    $this->set('ma_data',$ma_data);
   }
 
 }
