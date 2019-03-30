@@ -60,7 +60,7 @@ class RecordsController extends AppController
 	{
 		// SearchPluginの呼び出し
 		$this->Prg->commonProcess();
-	    $this->loadModel('Content');	
+	  $this->loadModel('Content');	
 		// Model の filterArgs に定義した内容にしたがって検索条件を作成
 		// ただしアソシエーションテーブルには対応していないため、独自に検索条件を設定する必要がある
 		$conditions = $this->Record->parseCriteria($this->Prg->parsedParams());
@@ -168,7 +168,7 @@ class RecordsController extends AppController
 		}
 		else
 		{
-            debug($conditions);
+            //debug($conditions);
 			$this->Paginator->settings['conditions'] = $conditions;
 			$this->Paginator->settings['order']      = 'Record.created desc';
 			$this->Record->recursive = 0;
@@ -190,7 +190,7 @@ class RecordsController extends AppController
 			$this->Group = new Group();
 			$this->Course = new Course();
 			$this->User = new User();
-            $this->Content = new Content();
+      $this->Content = new Content();
 			//debug($this->User);
 			
 			$this->set('groups',     $this->Group->find('list'));
@@ -200,7 +200,7 @@ class RecordsController extends AppController
 			$this->set('course_id',  $course_id);
 			$this->set('user_id',    $user_id);
 			$this->set('content_category',	$content_category);
-            $this->set('contents',   $this->Content->find('list'));
+      $this->set('contents',   $this->Content->find('list'));
 			$this->set('contenttitle',		$contenttitle);
 			$this->set('from_date', $from_date);
 			$this->set('to_date', $to_date);

@@ -65,6 +65,8 @@ class ContentsQuestionsController extends AppController
 			
 			$this->set('mode',   "record");
 			$this->set('record', $record);
+      //$this->log($record);
+      $this->set('record_id',$record_id);
 		}
 		
 		// コンテンツ情報を取得
@@ -76,55 +78,60 @@ class ContentsQuestionsController extends AppController
 		));
 		
 		// 採点処理
-		if ($this->request->is('post'))
-		{
-			$details = array();
-			$full_score = 0;
-			$pass_score = 0;
-			$my_score = 0;
-			$pass_rate = 0;
+		if ($this->request->is('post')){
+      if(isset($this->request->data['check'])){
+        $this->log($this->request->data);
+
+        $this->ContentsQuestion->checkMark($record_id); 
+
+		  }else{
+			  $details = array();
+			  $full_score = 0;
+			  $pass_score = 0;
+			  $my_score = 0;
+			  $pass_rate = 0;
 			
-			// 成績の詳細情報の作成
-			$i = 0;
-			foreach ($contentsQuestions as $contentsQuestion)
-			{
-				$question_id = $contentsQuestion['ContentsQuestion']['id'];
-				$answer = @$this->request->data['answer_' . $question_id];
-				$correct = $contentsQuestion['ContentsQuestion']['correct'];
-				$is_correct = ($answer == $correct) ? 1 : 0;
-				$score = $contentsQuestion['ContentsQuestion']['score'];
+			  // 成績の詳細情報の作成
+			  $i = 0;
+			  foreach ($contentsQuestions as $contentsQuestion)
+			  {
+				  $question_id = $contentsQuestion['ContentsQuestion']['id'];
+				  $answer = @$this->request->data['answer_' . $question_id];
+				  $correct = $contentsQuestion['ContentsQuestion']['correct'];
+				  $is_correct = ($answer == $correct) ? 1 : 0;
+				  $score = $contentsQuestion['ContentsQuestion']['score'];
 				
-				$full_score += $score;
-				$pass_rate = $contentsQuestion['Content']['pass_rate'];
+				  $full_score += $score;
+				  $pass_rate = $contentsQuestion['Content']['pass_rate'];
 				
-				if ($is_correct == 1)
-					$my_score += $score;
+				  if ($is_correct == 1)
+					  $my_score += $score;
 				
-				$details[$i] = array(
-						'question_id' => $question_id,
-						'answer' => $answer,
-						'correct' => $correct,
-						'is_correct' => $is_correct,
-						'score' => $score
-				);
-				$i ++;
-			}
+				  $details[$i] = array(
+					  	'question_id' => $question_id,
+						  'answer' => $answer,
+						  'correct' => $correct,
+						  'is_correct' => $is_correct,
+						  'score' => $score
+				  );
+				  $i ++;
+			  }
 			
-			$pass_score = ($full_score * $pass_rate) / 100;
+			  $pass_score = ($full_score * $pass_rate) / 100;
 			
-			$record = array(
-					'full_score' => $full_score,
-					'pass_score' => $pass_score,
-					'score' => $my_score,
-					'is_passed' => ($my_score >= $pass_score) ? 1 : 0,
-					'study_sec' => $this->request->data['ContentsQuestion']['study_sec']
-			);
+			  $record = array(
+				  	'full_score' => $full_score,
+				  	'pass_score' => $pass_score,
+				  	'score' => $my_score,
+				  	'is_passed' => ($my_score >= $pass_score) ? 1 : 0,
+				  	'study_sec' => $this->request->data['ContentsQuestion']['study_sec']
+			  );
 			
-			$this->loadModel('Record');
-			$this->Record->create();
+			  $this->loadModel('Record');
+			  $this->Record->create();
 			
-			// debug($this->Record);
-			$data = array(
+			  // debug($this->Record);
+			  $data = array(
 					'user_id'		=> $this->Session->read('Auth.User.id'),
 					'course_id'		=> $content['Course']['id'],
 					'content_id'	=> $content_id,
@@ -134,28 +141,28 @@ class ContentsQuestionsController extends AppController
 					'is_passed'		=> $record['is_passed'],
 					'study_sec'		=> $record['study_sec'],
 					'is_complete'	=> 1
-			);
+			  );
 			
-			if ($this->Record->save($data))
-			{
-				$this->loadModel('RecordsQuestion');
-				$record_id = $this->Record->getLastInsertID();
+			  if ($this->Record->save($data)){
+				  $this->loadModel('RecordsQuestion');
+				  $record_id = $this->Record->getLastInsertID();
 				
-				foreach ($details as $detail)
-				:
-					$this->RecordsQuestion->create();
-					$detail['record_id'] = $record_id;
-					$this->RecordsQuestion->save($detail);
-				endforeach
-				;
+				  foreach ($details as $detail)
+				  :
+					  $this->RecordsQuestion->create();
+					  $detail['record_id'] = $record_id;
+					  $this->RecordsQuestion->save($detail);
+				  endforeach
+				  ;
 				
-				$this->redirect(array(
-					'action' => 'record',
-					$content_id,
-					$this->Record->getLastInsertID()
-				));
-			}
-		}
+				  $this->redirect(array(
+					  'action' => 'record',
+					  $content_id,
+					  $this->Record->getLastInsertID()
+				  ));
+			  }
+    	}
+	  }
 		
 		$is_record = (($this->action == 'record') || ($this->action == 'admin_record'));
 		$is_admin  = ($this->action == 'admin_record');
@@ -169,6 +176,7 @@ class ContentsQuestionsController extends AppController
 	public function record($id, $record_id)
 	{
 		$this->index($id, $record_id);
+
 		$this->render('index');
 	}
 

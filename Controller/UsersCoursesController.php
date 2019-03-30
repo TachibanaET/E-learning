@@ -18,9 +18,33 @@ App::uses('AppController', 'Controller');
  */
 class UsersCoursesController extends AppController
 {
-  public $uses = array('User','LearningTime','Model','Setting','UsersCourse');
+  public $uses = array('User','LearningTime','Model','Setting','UsersCourse','Theme');
 	public $components = array(
+    'Paginator',
+    'Search.Prg',
+    'Session'
 	);
+
+  public $paginate = array();
+  
+  public $presetVars = array(
+    array(
+      'name' => 'name',
+      'type' => 'value',
+      'field' => 'User.name'
+    ),
+    array(
+      'name' => 'username',
+      'type' => 'like',
+      'field' => 'User.username'
+    ),
+    array(
+      'name' => 'theme',
+      'type' => 'like',
+      'field' => 'Theme.theme'
+    ),
+  );
+
   public $validate = array(
     'time' => array(
       'rule' => 'naturalNumber',
@@ -53,23 +77,104 @@ class UsersCoursesController extends AppController
 			$no_info = "お知らせはありません";
     /*20190303 勉強時間の提出*/
     $id = $this->Auth->User('id');
+
     $this->set('post_id',$id);
+
+    /*20190312*/
+    $conditions = $this->Theme->parseCriteria($this->Prg->parsedParams());
+    
+    $conditions['user_id'] = $id;
+
+    $options = array(
+      'conditions' => $conditions,
+      'fileds' => array('Theme.theme'),
+      'order' => 'Theme.created asc',
+      'group' => 'Theme.theme'
+    );
+
+    $select_list = [];
+     
+    $rows = $this->Theme->find('all',$options);
+
+    foreach($rows as $row){
+      $theme_id = $row['Theme']['id'];
+      $array = array(
+        "$theme_id" => $row['Theme']['theme']
+        );
+        array_push($select_list,$array);
+    }
+    
+    $this->set('select_list',$select_list);
+
+    $today_date = (isset($this->request->query['today_date'])) ?
+      $this->request->query['today_date']:
+        array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'));
+
+    $this->set('today_date',$today_date);
+    /*************/
     if($this->request->is('post')){
-      $this->LearningTime->create();
+      
       if(isset($this->request->data['submit'])){
         //提出する時の処理
-        $this->LearningTime->set($this->request->data);
+        $tmp = $this->request->data;
+        
 
+        $today_date = $tmp['LearningTime']['today_date'];
+
+        $created = $today_date['year']."-".$today_date['month']."-".$today_date['day'];
+       
+        if($tmp['LearningTime']['theme']){ 
+          
+          $select_index = (int)$tmp['LearningTime']['theme'];
+          //$theme_id = $rows[$index]['Theme']['id'];
+          $tmp['LearningTime']['theme_id'] = $select_index;
+        
+          $tmp['LearningTime']['created'] = $created;
+
+          $this->LearningTime->set($tmp);
+        }elseif($tmp['LearningTime']['theme_new']){
+
+          $array = array(
+            'user_id' => $id,
+            'theme' => $tmp['LearningTime']['theme_new']
+          );
+          $this->Theme->set($array);
+
+          if($this->Theme->save($array)){
+            $options = array(
+              'conditions' => array(
+                'Theme.theme' => $array['theme']
+              ),
+              'group' => 'Theme.theme'
+            );
+            $rows = $this->Theme->find('all',$options);
+            //$this->log($rows);
+            $tmp['LearningTime']['theme_id'] = $rows[0]['Theme']['id'];
+            //unset($tmp['LearningTime']['theme_new']);
+            //$this->log($tmp);
+            $tmp['LearningTime']['created'] = $created;
+            $this->LearningTime->set($tmp);
+          }
+          $this->Flash->error(__('提出は失敗しました、もう一回やってください。'));
+        }
+        
+        //$this->LearningTime->set($this->request->data);
+        $this->log($tmp);
         if($this->LearningTime->validates()){
 
           $this->LearningTime->create();
-          if($this->LearningTime->save($this->request->data)){
+          if($this->LearningTime->save($tmp)){
             $this->Flash->success(__('提出しました、ありがとうございます'));
             return $this->redirect(array('action' => 'index'));
           }
             $this->Flash->error(__('提出は失敗しました、もう一回やってください。'));
-        }
+        }/*else{
+          throw new BadRequestException();
+
+        }*/
       }elseif(isset($this->request->data['learningtime'])){
+        $this->Session->write('key',$this->request->data['LearningTime']['theme']);
+        //$this->log('key');
         return $this->redirect(array(
           'action' => 'learningtime',
           $id
@@ -90,16 +195,25 @@ class UsersCoursesController extends AppController
 	}
   /* 20190303 public function learningtime()を作成 */
   public function learningtime(){
+    /****20190313***/
     $id = $this->Auth->User('id');
+    if($this->Session->check('key')){
+      $theme_id = (int)$this->Session->read('key');
+      $this->set('theme_id',$theme_id);
+      //debug($theme_id);
+    }else{
+      throw new BadRequestException();
+    }
+   
     $this->set('post_id',$id);
     
-    $d_data = $this->LearningTime->findDay($id);
+    $d_data = $this->LearningTime->findDay($id,$theme_id);
     $this->set('d_data',$d_data); 
     
-    $w_data = $this->LearningTime->findWeek($id);
+    $w_data = $this->LearningTime->findWeek($id, $theme_id);
     $this->set('w_data',$w_data);
     
-    $wd_data = $this->LearningTime->findWeekData($id);
+    $wd_data = $this->LearningTime->findWeekData($id, $theme_id);
     foreach($wd_data as &$wdata):
       switch($wdata[0]['week']){
         case 1:
@@ -128,11 +242,23 @@ class UsersCoursesController extends AppController
     unset($wdata);
     $this->set('wd_data',$wd_data);
     
-    $m_data = $this->LearningTime->findMonth($id);
+    $m_data = $this->LearningTime->findMonth($id, $theme_id);
     $this->set('m_data',$m_data);
     
-    $ma_data = $this->LearningTime->findMonthUserAll($id);
+    $ma_data = $this->LearningTime->findMonthUserAll($id, $theme_id);
     $this->set('ma_data',$ma_data);
+    $rank = $this->LearningTime->rank($id, $theme_id);
+    $this->set('rank',$rank);
+
+    $untilNow = $this->LearningTime->findUserAll($id, $theme_id);
+    $this->set('untilNow',$untilNow);
+   
+    $theme = $this->LearningTime->getTheme($theme_id);
+    $this->set('theme',$theme); 
+    
+    $SA = $this->LearningTime->getUserSumAll($id,$theme_id);
+    $this->set('sumAll',$SA);
+    //debug($untilNow);
   }
 
 }

@@ -30,6 +30,7 @@ class SettingsController extends AppController {
 
 	public function admin_index()
 	{
+    //$this->Setting->upDate();
 		if ($this->request->is(array('post', 'put')))
 		{
 			if(Configure::read('demo_mode'))
