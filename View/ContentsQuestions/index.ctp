@@ -1,3 +1,4 @@
+<?php $is_check = 0;?>
 <div class="contentsQuestions form">
 	<ol class="breadcrumb">
 <?php
@@ -132,22 +133,25 @@
 	<!-- テスト結果ヘッダ表示 -->
 	<?php if($is_record){ ?>
 		<?php
+      //$this->log($record);
 			$result_color  = ($record['Record']['is_passed']==1) ? 'text-primary' : 'text-danger';
-			$result_label  = ($record['Record']['is_passed']==1) ? __('合格') : __('不合格');
+			//$result_label  = ($record['Record']['is_passed']==1) ? __('合格') : __('不合格');
+      $result_percent = ($record['Record']['score'] / $record['Record']['full_score']) * 100;
+			$result_label  = "$result_percent %";
 		?>
 		<table class="result-table">
 			<caption><?php echo __('テスト結果'); ?></caption>
 			<tr>
-				<td><?php echo __('合否'); ?></td>
-				<td><div class="<?php echo $result_color; ?>"><?php echo $result_label; ?></div></td>
+				<td><?php echo __('問題数'); ?></td>
+				<td><?php echo $record['Record']['full_score']; ?></div></td>
 			</tr>
 			<tr>
-				<td><?php echo __('得点'); ?></td>
-				<td><?php echo $record['Record']['score'].' / '.$record['Record']['full_score']; ?></td>
+				<td><?php echo __('正解数'); ?></td>
+				<td><div class="<?php echo $result_color; ?>"><?php echo $record['Record']['score']; ?></td>
 			</tr>
 			<tr>
-				<td><?php echo __('合格基準得点'); ?></td>
-				<td><?php echo $record['Record']['pass_score']; ?></td>
+				<td><?php echo __('結果'); ?></td>
+				<td><?php echo $result_label; ?></td>
 			</tr>
 		</table>
 	<?php }?>
@@ -209,6 +213,8 @@
 					$explain_tag = sprintf('<div class="correct-text bg-danger">%s</div>',
 						$contentsQuestion['ContentsQuestion']['explain']);
 				}
+        /****20190321***/
+        $is_check = 1;
 			}
 			?>
 			<div class="panel panel-info">
@@ -244,6 +250,13 @@
 			}
 			
 			echo '<input type="button" value="戻る" class="btn btn-default btn-lg" onclick="location.href=\''.Router::url($course_url).'\'">';
+
+			if($is_check == 1){
+      
+        echo '<input name = "check" type="submit" value="講師確認" class="btn btn-primary btn-lg">';
+      
+      }
+
 			echo '</div><!--end-->';
 			echo $this->Form->end();
 		?>

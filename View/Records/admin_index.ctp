@@ -97,7 +97,8 @@
         var label_d = '<?php echo $info['username'];?>'
         var y_d = '<?php echo $info['score'];?>'
         var y_d = Number(y_d);
-        var title_d = '<?php echo $record['Content']['title'];?>'
+        var title_d = '<?php echo (isset($records[0]['Content']['title']) ? $records[0]['Content']['title'] : "") ;?>'
+
         data_list.push({
           label: label_d,
           y: y_d    
@@ -111,7 +112,8 @@
           interval: 2,
         },
         title:{
-          text: title_d    
+          text: title_d,
+          fontSize: 20,
         },
         data:[{
           type: 'bar',
@@ -123,6 +125,7 @@
 </script>
 <?php $this->end(); ?>
 <div class="records index">
+  <?php echo $this->log($records);?>
 	<div class="ib-page-title"><?php echo __('学習履歴一覧'); ?></div>
 	<div class="ib-horizontal">
 		<?php
@@ -145,7 +148,7 @@
 			echo $this->Form->input('course_id',		array('label' => 'コース :', 'options'=>$courses, 'selected'=>$course_id, 'empty' => '全て', 'required'=>false, 'class'=>'form-control'));
 			echo $this->Form->input('content_category',	array('label' => 'コンテンツ種別 :', 'options'=>Configure::read('content_category'), 'selected'=>$content_category, 'empty' => '全て', 'required'=>false, 'class'=>'form-control'));
 			//echo $this->Form->input('contenttitle',		array('label' => 'コンテンツ名 :', 'value'=>$contenttitle, 'class'=>'form-control'));
-            echo $this->Form->input('contenttitle', array('label' => 'コンテンツ名:', 'options' => $contents, 'selected' => $contenttitle, 'empty' => '全て', 'required' => false, 'class' => 'form-control'));
+      echo $this->Form->input('contenttitle', array('label' => 'コンテンツ名:', 'options' => $contents, 'selected' => $contenttitle, 'empty' => '全て', 'required' => false, 'class' => 'form-control'));
 			echo '</div>';
 			
 			echo '<div class="ib-row">';
@@ -187,11 +190,16 @@
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 	<tr>
+    <th class = "ib-col-center nowrap">
+    <?php 
+      echo $this->Paginator->sort('is_check','チェック');
+    ?>
+    </th>
 		<th nowrap><?php echo $this->Paginator->sort('course_id', 'コース'); ?></th>
 		<th nowrap><?php echo $this->Paginator->sort('content_id', 'コンテンツ'); ?></th>
 		<th nowrap><?php echo $this->Paginator->sort('User.name', '氏名'); ?></th>
-		<th nowrap class="ib-col-center"><?php echo $this->Paginator->sort('score', '得点'); ?></th>
-		<th class="ib-col-center" nowrap><?php echo $this->Paginator->sort('pass_score', '合格点'); ?></th>
+		<th nowrap class="ib-col-center"><?php echo $this->Paginator->sort('score', '正解数'); ?></th>
+		<th class="ib-col-center" nowrap><?php echo $this->Paginator->sort('pass_score', '問題数'); ?></th>
 		<th nowrap class="ib-col-center"><?php echo $this->Paginator->sort('is_passed', '結果'); ?></th>
 		<th class="ib-col-center" nowrap><?php echo $this->Paginator->sort('understanding', '理解度'); ?></th>
 		<th class="ib-col-center"><?php echo $this->Paginator->sort('study_sec', '学習時間'); ?></th>
@@ -201,15 +209,40 @@
 	<tbody>
 	<?php foreach ($records as $record): ?>
 	<tr>
-		<td><a href="javascript:openRecord(<?php echo h($record['Course']['id']); ?>, <?php echo h($record['User']['id']); ?>);"><?php echo h($record['Course']['title']); ?></a></td>
-		<td><?php echo h($record['Content']['title']); ?>&nbsp;</td>
-		<td><?php echo h($record['User']['name']); ?>&nbsp;</td>
-		<td class="ib-col-center"><?php echo h($record['Record']['score']); ?>&nbsp;</td>
-		<td class="ib-col-center"><?php echo h($record['Record']['pass_score']); ?>&nbsp;</td>
-		<td nowrap class="ib-col-center"><a href="javascript:openTestRecord(<?php echo h($record['Content']['id']); ?>, <?php echo h($record['Record']['id']); ?>);"><?php echo Configure::read('record_result.'.$record['Record']['is_passed']); ?></a></td>
-		<td nowrap class="ib-col-center"><?php echo h(Configure::read('record_understanding.'.$record['Record']['understanding'])); ?>&nbsp;</td>
-		<td class="ib-col-center"><?php echo h(Utils::getHNSBySec($record['Record']['study_sec'])); ?>&nbsp;</td>
-		<td class="ib-col-date"><?php echo h(Utils::getYMDHN($record['Record']['created'])); ?>&nbsp;</td>
+    <td nowrap class="ib-col-center"><?php 
+      if($record['Record']['is_check'] == 5){
+      echo h(Configure::read('record_understanding.'.$record['Record']['is_check'])); 
+      }
+      ?>&nbsp;</td>
+		
+    <td><a href="javascript:openRecord(<?php echo h($record['Course']['id']); ?>, <?php echo h($record['User']['id']); ?>);"><?php echo h($record['Course']['title']); ?></a></td>
+		
+    <td><?php echo h($record['Content']['title']); ?>&nbsp;</td>
+		
+    <td><?php echo h($record['User']['name']); ?>&nbsp;</td>
+		
+    <td class="ib-col-center"><?php echo h($record['Record']['score']); ?>&nbsp;</td>
+	  
+    <td class="ib-col-center"><?php echo h($record['Record']['full_score']); ?>&nbsp;</td>
+
+		<?php 
+      if($record['Record']['full_score']!=0){
+        $result = $record['Record']['score'] / $record['Record']['full_score'];
+        $result = round($result * 100);
+      }
+    ?>
+    <td nowrap class="ib-col-center"><a href="javascript:openTestRecord(<?php echo h($record['Content']['id']); ?>, <?php echo h($record['Record']['id']); ?>);"><?php 
+      //echo Configure::read('record_result.'.$record['Record']['is_passed']); 
+      if($record['Record']['full_score']!=0){
+        echo "$result %";
+      }
+?></a></td>
+		
+    <td nowrap class="ib-col-center"><?php echo h(Configure::read('record_understanding.'.$record['Record']['understanding'])); ?>&nbsp;</td>
+		
+    <td class="ib-col-center"><?php echo h(Utils::getHNSBySec($record['Record']['study_sec'])); ?>&nbsp;</td>
+		
+    <td class="ib-col-date"><?php echo h(Utils::getYMDHN($record['Record']['created'])); ?>&nbsp;</td>
 	</tr>
 	<?php endforeach; ?>
 	</tbody>
