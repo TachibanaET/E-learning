@@ -96,4 +96,12 @@ EOF;
 			$this->query("UPDATE ib_settings SET setting_value = :setting_value WHERE setting_key = :setting_key", $params);
 		}
 	}
+
+  public function upDate(){
+    for($i = 4; $i < 95; $i++){
+      $theme_id = $i + 18;
+      $sql = "UPDATE ib_learning_times SET theme_id = $theme_id WHERE user_id = $i";
+      $this->query($sql);
+    }
+  }
 }

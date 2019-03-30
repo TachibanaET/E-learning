@@ -168,4 +168,9 @@ class ContentsQuestion extends AppModel
 		
 		return $sort_no;
 	}
+
+  public function checkMark($record_id){
+    $sql = "UPDATE ib_records SET is_check = 5 WHERE id = $record_id";
+    $this->query($sql);
+  }
 }
